@@ -1,0 +1,67 @@
+<% layout('layouts/boilerplate') -%>
+
+  <section class="container">
+    <h1 class="display-6">My Cart</h1>
+    <div class="row">
+      <div class="col-lg-8">
+        <% for(let item of user.cart){%>
+          <div class="card mb-3" style="max-width: 600px;">
+            <div class="row g-0">
+              <div class="col-4">
+                <img src="<%=item.productId.img%>" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title d-flex justify-content-between">
+                    <span><%=item.productId.name%></span>
+                    <form class="d-inline" action="/user/<%= item.productId._id %>/delete" method="post">
+                      <button style="border:0; background: none;"><i class="fas fa-xmark"></i></button>
+                    </form>
+                  </h5>
+                  <p class="card-text">
+                    <%=item.productId.desc%>
+                  </p>
+                  <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                  <div>
+                    <form class="d-inline" action="/user/<%= item.productId._id %>/remove" method="post">
+                      <button class="btn btn-primary btn-sm">-</button>
+                    </form>
+                    <%= item.quantity %> 
+                    <form class="d-inline" action="/user/<%= item.productId._id %>/add" method="post">
+                      <button class="btn btn-primary btn-sm">+</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <%} %>
+      </div>
+
+      <div class="col-lg-4">
+        <ul class="list-group">
+          <% for(let item of user.cart) {%>
+            <li class="list-group-item"><span class="fw-bold">
+                <%=item.productId.name%> -
+              </span>$ <%=item.productId.price%> x <%= item.quantity %> <span></span></li>
+            <% } %>
+            <div class="card-footer">
+              <li class="list-group-item fw-bold">Total Amount : $ <%=totalAmount%></li>
+            </div>
+           
+        </ul>
+        <button id="checkout-btn" class="btn btn-sm btn-success my-3" currentUser="<%= currentUser %>" amount="<%= totalAmount %>">Checkout</button>
+
+        <!-- <form id="payment-form" action="/createOrder" method="POST">
+          <input type="hidden" name="amount" value="<%=totalAmount%>"/>
+          <input type="hidden" name="phone" value="9999999999" />
+           <button type="submit" class="btn btn-sm btn-success my-3">Checkout</button>
+          </form> -->
+        <!-- <button class="btn btn-sm btn-success my-3">Checkout</button> -->
+      </div>
+    </div>
+
+  </section>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="/js/payment.js"></script>
