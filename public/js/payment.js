@@ -1,7 +1,7 @@
 const btn = document.querySelector('#checkout-btn')
 
 btn.addEventListener('click', async (e) => {
-
+    e.preventDefault();
     const currUser = btn.getAttribute('currentUser');
     const amount = btn.getAttribute('amount');
     const { data: { key } } = await axios.get('https://ecom-ctzj.onrender.com/getkey');
